@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>2D Circle</title>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 myPosition;
+
+        uniform float theta;
+        uniform vec2 uPos;
+
+        void main() {
+            
+            float xi = myPosition.x;
+            float yi = myPosition.y;
+            
+            float xf =  xi * cos( theta ) + yi * sin( theta );
+            float yf = -xi * sin( theta ) + yi * cos( theta );
+            
+            gl_Position.x = xf + uPos.x;
+            gl_Position.y = yf + uPos.y;
+            gl_Position.z = 0.0;
+            gl_Position.w = 1.0;
+            
+            gl_PointSize = 1.0;
+        }
+        
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+
+        uniform vec3 myColor;
+
+        void main() {
+            gl_FragColor = vec4(myColor, 1.0);
+        }
+    </script>
+
+    <!-- <script type="text/javascript" src="./gl-matrix-min.js"></script> -->
+    <script type="text/javascript" src="./Common/webgl-utils.js"></script>
+    <script type="text/javascript"
+        src="https://www.cs.unm.edu/~angel/BOOK/INTERACTIVE_COMPUTER_GRAPHICS/EIGHTH_EDITION/CODE/Common/initShaders.js"></script>
+    <script type="text/javascript"
+        src="https://www.cs.unm.edu/~angel/BOOK/INTERACTIVE_COMPUTER_GRAPHICS/EIGHTH_EDITION/CODE/Common/MVnew.js"></script>
+
+    <script type="module" src="./code.js"></script>
+</head>
+
+<body>
+    <canvas id="gl-canvas" width="640" height="640">
+    </canvas>
+
+    <button id="increaseSpeed">Increase</button>
+    <button id="decreaseSpeed">Decrease</button>
+    
+    <button id="startRotate">StartRotate</button>
+    <button id="stopRotate">StopRotate</button>
+</body>
+
+</html>
