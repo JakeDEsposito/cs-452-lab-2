@@ -12,9 +12,9 @@ let thetaUniform;
 let pos;
 let posUniform;
 
-let dir = [0,0];
+let dir = [1,0];
 
-let speed = 0.01
+let speed = 0.001
 let speedStep = 1
 
 let shouldRotate = true
@@ -70,13 +70,13 @@ window.onload = init()
 
 document.getElementById("increaseSpeed").addEventListener("click", () => {
     speedStep++
-    speed = 0.01 * speedStep
+    speed = 0.001 * speedStep
 })
 
 document.getElementById("decreaseSpeed").addEventListener("click", () => {
     if (speedStep > 0) {
         speedStep--
-        speed = 0.01 * speedStep
+    	speed = 0.001 * speedStep
     }
 })
 
