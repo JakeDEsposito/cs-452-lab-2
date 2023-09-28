@@ -4,7 +4,7 @@ let canvas;
 /** @type {WebGLRenderingContext} */
 let gl;
 
-const starPoints = [vec2(0.2, 0.2), vec2(-0.2, 0.2), vec2(-0.2, -0.2), vec2(0.2, -0.2)]
+const starPoints = [vec2(0.2, 0.2), vec2(0, 0.3), vec2(-0.2, 0.2), vec2(-0.1, -0.2), vec2(0.1, -0.2)]
 
 let theta = 0.0
 let thetaUniform;
@@ -12,8 +12,10 @@ let thetaUniform;
 let pos;
 let posUniform;
 
+let dir = [0,0];
+
 let speed = 0.01
-const speedStep = 0.01
+let speedStep = 1
 
 let shouldRotate = true
 
@@ -67,11 +69,15 @@ function init() {
 window.onload = init()
 
 document.getElementById("increaseSpeed").addEventListener("click", () => {
-    speed += speedStep
+    speedStep++
+    speed = 0.01 * speedStep
 })
 
 document.getElementById("decreaseSpeed").addEventListener("click", () => {
-    if (speed > 0) speed -= speedStep
+    if (speedStep > 0) {
+        speedStep--
+        speed = 0.01 * speedStep
+    }
 })
 
 document.getElementById("startRotate").addEventListener("click", () => {
@@ -82,20 +88,42 @@ document.getElementById("stopRotate").addEventListener("click", () => {
     shouldRotate = false
 })
 
+// window.addEventListener("keydown", ({ key }) => {
+//     if (key === "w") {
+//         dir[1] = speed
+//         dir[0] = 0
+//     }
+//     else if (key === "s") {
+//         dir[1] = -speed
+//         dir[0] = 0
+//     }
+//     else if (key === "a") {
+//         dir[0] = -speed
+//         dir[1] = 0
+//     }
+//     else if (key === "d") {
+//         dir[0] = speed
+//         dir[1] = 0
+//     }
+// })
+
 window.addEventListener("keydown", ({ key }) => {
     if (key === "w")
-        pos[1] += speed
-    if (key === "s")
-        pos[1] -= speed
-    if (key === "a")
-        pos[0] -= speed
-    if (key === "d")
-        pos[0] += speed
+        dir = [0,1]
+    else if (key === "s")
+        dir = [0,-1]
+    else if (key === "a")
+        dir = [-1,0]
+    else if (key === "d")
+        dir = [1,0]
 })
 
 canvas.addEventListener("mousedown", ({ x, y }) => pos = [x / canvas.width * 2 - 1, -(y / canvas.height * 2 - 1)])
 
 function render() {
+    pos[0] += dir[0]*speed
+    pos[1] += dir[1]*speed
+
     if (shouldRotate) theta += 0.01
     gl.uniform1f(thetaUniform, theta)
 
